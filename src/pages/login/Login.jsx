@@ -1,37 +1,60 @@
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../context/useAuth"
+import Loading from "../../component/loading/Loading"
 import './Login.css'
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
-  // console.log(login)
   const navigate = useNavigate();
+  // form pending state using React 19 way
+  const [error, setError] = useState(null);
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const res = await fetch("https://api.escuelajs.co/api/v1/auth/login", {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, password })
+  const handleSubmit = (event) => {
+    //in React 19 way
+    startTransition(async () => {
+      event.preventDefault();
+      const res = await fetch("https://api.escuelajs.co/api/v1/auth/login", {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      })
+
+      const data = await res.json();
+      if (data.access_token) {
+        login(data.access_token);
+        navigate("/dashboard")
+      } else {
+        if (!res.ok) {
+          setError(data.error);
+          return;
+        }
+      }
     })
-    const data = await res.json();
-    if (data.access_token) {
-      login(data.access_token);
-      navigate("/dashboard")
-    } else {
-      alert("Invalid credentials")
-    }
-
-  }
-
-  // function validateEmail(email) {
-  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  //   return emailRegex.test(email);
+  };
+  // Older way
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const res = await fetch("https://api.escuelajs.co/api/v1/auth/login", {
+  //     method: 'POST',
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify({ email, password })
+  //   })
+  //   const data = await res.json();
+  //   if (data.access_token) {
+  //     login(data.access_token);
+  //     navigate("/dashboard")
+  //   } else {
+  //     alert("Invalid credentials")
+  //   }
   // }
+
   const handleInput = (event) => {
     if (event.target.name === "email") {
       setEmail(event.target.value)
@@ -41,40 +64,44 @@ const Login = () => {
   }
 
   return (
-    <div className="login-wrapper">
-      <div className="login-container">
-        <div className="row login-card">
-          <div className="col-md-6 login-left">
-            <h2>Welcome Back!</h2>
-            <p>Sign in to your account to continue accessing our platform and all its features. We're glad to have you back!</p>
+    <>
+      {
+        isPending ? <Loading /> : <div className="login-wrapper">
+          <div className="login-container">
+            <div className="row login-card">
+              <div className="col-md-6 login-left">
 
-            <div className="feature-list">
-              <div className="feature-item">
-                <div className="feature-icon">
-                  <i className="fas fa-shield-alt"></i>
-                </div>
-                <div>Secure & Encrypted Login</div>
-              </div>
-              <div className="feature-item">
-                <div className="feature-icon">
-                  <i className="fas fa-bolt"></i>
-                </div>
-                <div>Fast and Reliable Access</div>
-              </div>
-              <div className="feature-item">
-                <div className="feature-icon">
-                  <i className="fas fa-headset"></i>
-                </div>
-                <div>24/7 Customer Support</div>
-              </div>
-            </div>
-          </div>
+                <h2>Welcome Back!</h2>
+                <p>Sign in to your account to continue accessing our platform and all its features. We're glad to have you back!</p>
 
-          <div className="col-md-6 login-right">
-            <h3>Sign In</h3>
-            <p className="subtitle">Enter your credentials to access your account</p>
+                <div className="feature-list">
+                  <div className="feature-item">
+                    <div className="feature-icon">
+                      <i className="fas fa-shield-alt"></i>
+                    </div>
+                    <div>Secure & Encrypted Login</div>
+                  </div>
+                  <div className="feature-item">
+                    <div className="feature-icon">
+                      <i className="fas fa-bolt"></i>
+                    </div>
+                    <div>Fast and Reliable Access</div>
+                  </div>
+                  <div className="feature-item">
+                    <div className="feature-icon">
+                      <i className="fas fa-headset"></i>
+                    </div>
+                    <div>24/7 Customer Support</div>
+                  </div>
+                </div>
+              </div>
 
-            {/* <div className="social-login">
+              <div className="col-md-6 login-right">
+                {error && <p style={{ 'color': 'red', 'textAlign': 'center', 'fontSize': '22px' }}>{error}</p>}
+                <h3>Sign In</h3>
+                <p className="subtitle">Enter your credentials to access your account</p>
+
+                {/* <div className="social-login">
               <button type="button" className="social-btn btn-google">
                 <i className="fab fa-google"></i> Google
               </button>
@@ -87,39 +114,44 @@ const Login = () => {
               <span>Or continue with email</span>
             </div> */}
 
-            <form id="loginForm" onSubmit={handleSubmit} noValidate>
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label">Email Address</label>
-                <input type="email" className="form-control" id="email" placeholder="name@example.com" value={email} name="email" onChange={(e) => handleInput(e)} />
-              </div>
+                <form id="loginForm" onSubmit={handleSubmit} noValidate>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email Address</label>
+                    <input type="email" className="form-control" id="email" placeholder="name@example.com" value={email} name="email" onChange={(e) => handleInput(e)} />
+                  </div>
 
-              <div className="mb-3 position-relative">
-                <label htmlFor="password" className="form-label">Password</label>
-                <input type="password" className="form-control" id="password" placeholder="Enter your password" value={password} name="password" onChange={(e) => handleInput(e)} />
-                <span className="password-toggle" id="togglePassword">
-                  <i className="far fa-eye"></i>
-                </span>
-              </div>
+                  <div className="mb-3 position-relative">
+                    <label htmlFor="password" className="form-label">Password</label>
+                    <input type="password" className="form-control" id="password" placeholder="Enter your password" value={password} name="password" onChange={(e) => handleInput(e)} />
+                    <span className="password-toggle" id="togglePassword">
+                      <i className="far fa-eye"></i>
+                    </span>
+                  </div>
 
-              {/* <div className="mb-3 form-check">
+                  {/* <div className="mb-3 form-check">
                 <input type="checkbox" className="form-check-input" id="rememberMe" />
                 <label className="form-check-label" htmlFor="rememberMe">Remember me</label>
               </div> */}
 
-              <button type="submit" className="btn btn-login mb-3">Login</button>
+                  <button type="submit" className="btn btn-login mb-3">Login</button>
 
-              <div className="forgot-password">
-                <a href="#" id="forgotPassword">Forgot your password?</a>
-              </div>
+                  <div className="forgot-password">
+                    <a href="#" id="forgotPassword">Forgot your password?</a>
+                  </div>
 
-              {/* <div className="signup-link">
+
+                  {/* <div className="signup-link">
                 Don't have an account? <a href="#" id="signUpLink">Sign up here</a>
               </div> */}
-            </form>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      }
+
+
+    </>
   )
 }
 
