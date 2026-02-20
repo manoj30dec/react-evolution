@@ -1,6 +1,6 @@
 
 import { use } from "react";
-import AuthContext from "./AuthContext"
+import AuthContext from "./auth-context";
 const useAuth = () => {
     // const context = useContext(AuthContext);
     const context = use(AuthContext); //React 19 way

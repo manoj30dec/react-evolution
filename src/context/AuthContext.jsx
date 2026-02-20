@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, } from "react";
+import { useState } from "react";
 
-const AuthContext = createContext(null)
+import AuthContext from "./auth-context";
 
 const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(() => {
@@ -20,7 +20,7 @@ const AuthProvider = ({ children }) => {
 
     return (
         // <AuthContext.Provider value={{ token, login, logout }}>
-        //     {Children}
+        //     {children}
         // </AuthContext.Provider>
         // React 19 way
         <AuthContext value={{ token, login, logout }}>
