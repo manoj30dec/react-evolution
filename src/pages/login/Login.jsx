@@ -31,7 +31,6 @@ const Login = () => {
       if (data.access_token) {
         login(data.access_token);
         // navigate("/dashboard");
-        console.log(from)
         navigate(from, { replace: true })
       } else {
         if (!res.ok) {
@@ -74,7 +73,6 @@ const Login = () => {
       setPassword(event.target.value);
     }
   };
-  console.log(error);
   return (
     <>
       {isPending ? (

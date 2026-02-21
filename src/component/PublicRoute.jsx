@@ -4,7 +4,6 @@ import useAuth from "../context/useAuth"
 export default function PublicRoute({ children }) {
     const { token } = useAuth();
     const location = useLocation();
-    console.log(location)
     if (token) {
         return (
             <Navigate to={location.state?.from.pathname || '/dashboard'} replace />
