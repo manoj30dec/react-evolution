@@ -1,13 +1,16 @@
 import { useState, useTransition } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../context/useAuth";
 import Loading from "../../component/loading/Loading";
 import "./Login.css";
 const Login = () => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/dashboard';
   // form pending state using React 19 way
   const [error, setError] = useState(null);
   const [isPending, startTransition] = useTransition();
@@ -27,7 +30,9 @@ const Login = () => {
       const data = await res.json();
       if (data.access_token) {
         login(data.access_token);
-        navigate("/dashboard");
+        // navigate("/dashboard");
+        console.log(from)
+        navigate(from, { replace: true })
       } else {
         if (!res.ok) {
           setError(data.message);
