@@ -1,0 +1,8 @@
+.layout{
+    min-height: 100vh;
+    padding: 0;
+}
+.outlet-wrapper{
+    min-height: calc(100vh - 56px - 40px);
+    padding:1rem;
+}

@@ -6,6 +6,7 @@ import Dashboard from './pages/dashboard/Dashboard'
 import ProtectedRoute from './component/ProtectedRoute'
 import PublicRoute from './component/PublicRoute'
 import Notfound from './pages/notfound/Notfound'
+import Layout from './pages/layout/layout'
 
 // to apply lazy loading
 const Contactus = lazy(() => import('./pages/contactus/Contactus'))
@@ -21,16 +22,14 @@ function App() {
             <Login />
           </PublicRoute>
         } />
-        <Route path='/dashboard' element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-        <Route path='/contact-us' element={
-          <ProtectedRoute>
-            <Contactus />
-          </ProtectedRoute>
-        } />
+
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/contact-us" element={<Contactus />} />
+          </Route>
+        </Route>
+
         <Route path="*" element={<Notfound />} />
       </Routes>
     </>
