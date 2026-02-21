@@ -15,12 +15,8 @@ const Primeheader = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link" aria-disabled="true">Reducer Demo</Link>
-                            </li>
-                            <li className="nav-item">
                                 <Link to={'/contact-us'} className="nav-link" >Contact Us</Link>
                             </li>
-
                         </ul>
                         <div className="d-flex" role="search">
                             {/* <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" /> */}
