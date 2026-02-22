@@ -4,13 +4,12 @@ import useAuth from "../../context/useAuth";
 import Loading from "../../component/loading/Loading";
 import "./Login.css";
 const Login = () => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname || "/dashboard";
   // form pending state using React 19 way
   const [error, setError] = useState(null);
   const [isPending, startTransition] = useTransition();
@@ -31,7 +30,7 @@ const Login = () => {
       if (data.access_token) {
         login(data.access_token);
         // navigate("/dashboard");
-        navigate(from, { replace: true })
+        navigate(from, { replace: true });
       } else {
         if (!res.ok) {
           setError(data.message);
@@ -82,7 +81,8 @@ const Login = () => {
           <div className="login-container">
             <div className="row login-card">
               <div className="col-md-6 login-left">
-                {error ? <h1>error</h1> : ""}
+                {error ? <h1>{error}</h1> : ""}
+                <h2>Demo of useTransition</h2>
                 <h2>Welcome Back!</h2>
                 <p>
                   Sign in to your account to continue accessing our platform and

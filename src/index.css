@@ -18,7 +18,7 @@
   --light-text: #6c757d;
 }
 
-#root{
+#root {
   min-height: 100vh;
 }
 a {
@@ -59,7 +59,10 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
+.navbar-brand.nav-link {
+  background: #0dcaf0;
+  border-radius: 4px;
+}
 /* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
