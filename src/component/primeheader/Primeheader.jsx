@@ -40,6 +40,16 @@ const Primeheader = () => {
                   useOptimistic Example
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink
+                  to={"/reducer-example"}
+                  className={({ isActive }) =>
+                    isActive ? "navbar-brand nav-link" : "nav-link"
+                  }
+                >
+                  useReducer example
+                </NavLink>
+              </li>
             </ul>
             <div className="d-flex" role="search">
               {/* <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" /> */}
