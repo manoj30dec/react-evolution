@@ -30,6 +30,16 @@ const Primeheader = () => {
                   Contact Us
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink
+                  to={"/useoptimistic-example"}
+                  className={({ isActive }) =>
+                    isActive ? "navbar-brand nav-link" : "nav-link"
+                  }
+                >
+                  useOptimistic Example
+                </NavLink>
+              </li>
             </ul>
             <div className="d-flex" role="search">
               {/* <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" /> */}

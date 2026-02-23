@@ -10,6 +10,7 @@ import Layout from './pages/layout/layout'
 
 // to apply lazy loading
 const Contactus = lazy(() => import('./pages/contactus/Contactus'))
+const Optimistic = lazy(() => import('./pages/Optimistic/Optimistic'))
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/contact-us" element={<Contactus />} />
+            <Route path="/useoptimistic-example" element={<Optimistic />} />
           </Route>
         </Route>
 
